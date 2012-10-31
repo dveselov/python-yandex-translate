@@ -8,4 +8,4 @@ python:
   - "3.2.3"
   - "3.3.0"
 # command to run tests
-script: python yandex_translate.py
+script: python tests.py

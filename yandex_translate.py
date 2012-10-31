@@ -37,8 +37,3 @@ class YandexTranslate(object):
             raise 'ERR_LANG_NOT_SUPPORTED'
         else:
             return json
-
-translate = YandexTranslate()
-print(translate.get_langs())
-print(translate.detect('Привет, мир!'))
-print(translate.translate('ru-en', 'Привет, мир!'))
