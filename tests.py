@@ -4,6 +4,6 @@ from yandex_translate import *
 
 
 translate = YandexTranslate()
-print(translate.get_langs())
-print(translate.detect('Привет, мир!'))
-print(translate.translate('ru-en', 'Привет, мир!'))
+print('Current languages: ', translate.get_langs())
+print('Detect language:', translate.detect('Привет, мир!'))
+print('Translate:', translate.translate('ru-en', 'Привет, мир!'))
