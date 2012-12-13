@@ -1,11 +1,18 @@
 #!/usr/bin/python
-#-*-coding:utf-8-*-
+# -*-coding:utf-8-*-
+
+__version__ = "0.1"
+
 try:
     from urllib import urlopen, urlencode
 except:
     from urllib.request import urlopen
     from urllib.parse import urlencode
 from json import loads
+
+
+class YandexTranslateException(Exception):
+    pass
 
 
 class YandexTranslate(object):
@@ -28,12 +35,17 @@ class YandexTranslate(object):
     def translate(self, lang, text, format='plain'):
         data = urlencode({'text': text, 'format': format, 'lang': lang})
         result = urlopen(self.api_urls['translate'] % data).read()
-        json = loads(result.decode("utf-8"))
+
+        try:
+            json = loads(result.decode("utf-8"))
+        except ValueError:
+            raise YandexTranslateException, result
+
         if json['code'] == 413:
-            raise 'ERR_TEXT_TOO_LONG'
+            raise YandexTranslateException, 'ERR_TEXT_TOO_LONG'
         elif json['code'] == 422:
-            raise 'ERR_UNPROCESSABLE_TEXT'
+            raise YandexTranslateException, 'ERR_UNPROCESSABLE_TEXT'
         elif json['code'] == 501:
-            raise 'ERR_LANG_NOT_SUPPORTED'
+            raise YandexTranslateException, 'ERR_LANG_NOT_SUPPORTED'
         else:
             return json
