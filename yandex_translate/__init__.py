@@ -23,7 +23,8 @@ class YandexTranslate(object):
             'translate': 'http://translate.yandex.net/api/v1/tr.json/translate?%s',
         }
 
-    def get_langs(self):
+    @property
+    def langs(self):
         result = urlopen(self.api_urls['get_langs']).read()
         return loads(result.decode("utf-8"))['dirs']
 
