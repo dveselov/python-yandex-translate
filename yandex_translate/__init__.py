@@ -40,13 +40,13 @@ class YandexTranslate(object):
         try:
             json = loads(result.decode("utf-8"))
         except ValueError:
-            raise YandexTranslateException, result
+            raise YandexTranslateException(result)
 
         if json['code'] == 413:
-            raise YandexTranslateException, 'ERR_TEXT_TOO_LONG'
+            raise YandexTranslateException('ERR_TEXT_TOO_LONG')
         elif json['code'] == 422:
-            raise YandexTranslateException, 'ERR_UNPROCESSABLE_TEXT'
+            raise YandexTranslateException('ERR_UNPROCESSABLE_TEXT')
         elif json['code'] == 501:
-            raise YandexTranslateException, 'ERR_LANG_NOT_SUPPORTED'
+            raise YandexTranslateException('ERR_LANG_NOT_SUPPORTED')
         else:
             return json
