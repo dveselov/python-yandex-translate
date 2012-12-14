@@ -1,9 +1,6 @@
 python-yandex-translate
 =======================
 
-[![Build Status](https://secure.travis-ci.org/vdmitrij/python-yandex-translate.png)](http://travis-ci.org/vdmitrij/python-yandex-translate)
-
-
 Python library for Yandex Translate API.
 
 This module is fully-compatible with Python 2 and 3 versions.
@@ -13,7 +10,7 @@ Example from tests.py:
 ```python
 from yandex_translate import *
 translate = YandexTranslate()
-print('Current languages: ', translate.get_langs())
+print('Current languages: ', translate.langs)
 print('Detect language:', translate.detect('Привет, мир!'))
 print('Translate:', translate.translate('ru-en', 'Привет, мир!'))
 ```
