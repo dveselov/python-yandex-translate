@@ -61,7 +61,7 @@ class YandexTranslate(object):
         """
         Specifies the language of the text
         @in: text='Hello, world', format=['plain', 'html']
-        @out: String with language code
+        @out: dict={'code': 200, 'lang': 'en'}
         >>> translate = YandexTranslate()
         >>> result = translate.detect(text='Hello, world!')
         >>> result['code']
@@ -101,3 +101,6 @@ class YandexTranslate(object):
             raise YandexTranslateException('ERR_LANG_NOT_SUPPORTED')
         else:
             return json
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
