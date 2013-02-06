@@ -30,15 +30,20 @@ class YandexTranslate(object):
         @in: None
         @out: None
         >>> translate = YandexTranslate()
-        >>> type(translate.api_urls)
-        <type 'dict'>
         >>> len(translate.api_urls)
+        3
+        >>> len(translate.error_codes)
         3
         """
         self.api_urls = {
             'get_langs': 'http://translate.yandex.net/api/v1/tr.json/getLangs?%s',
             'detect': 'http://translate.yandex.net/api/v1/tr.json/detect?%s',
             'translate': 'http://translate.yandex.net/api/v1/tr.json/translate?%s',
+        }
+        self.error_codes = {
+            413: "ERR_TEXT_TOO_LONG",
+            422: "ERR_UNPROCESSABLE_TEXT",
+            501: "ERR_LANG_NOT_SUPPORTED",
         }
 
     @property
@@ -49,8 +54,6 @@ class YandexTranslate(object):
         @out: Array strings
         >>> translate = YandexTranslate()
         >>> languages = translate.langs
-        >>> type(languages)
-        <type 'list'>
         >>> len(languages) > 0
         True
         """
@@ -66,8 +69,8 @@ class YandexTranslate(object):
         >>> result = translate.detect(text='Hello, world!')
         >>> result['code']
         200
-        >>> result['lang']
-        u'en'
+        >>> len(result['lang'])
+        2
         """
         data = urlencode({'text': text, 'format': format})
         result = urlopen(self.api_urls['detect'] % data).read()
@@ -82,8 +85,8 @@ class YandexTranslate(object):
         >>> result = translate.translate(lang='ru', text='Hello, world!')
         >>> result['code']
         200
-        >>> result['lang']
-        u'en-ru'
+        >>> len(result['lang'])
+        5
         """
         data = urlencode({'text': text, 'format': format, 'lang': lang})
         result = urlopen(self.api_urls['translate'] % data).read()
@@ -93,12 +96,8 @@ class YandexTranslate(object):
         except ValueError:
             raise YandexTranslateException(result)
 
-        if json['code'] == 413:
-            raise YandexTranslateException('ERR_TEXT_TOO_LONG')
-        elif json['code'] == 422:
-            raise YandexTranslateException('ERR_UNPROCESSABLE_TEXT')
-        elif json['code'] == 501:
-            raise YandexTranslateException('ERR_LANG_NOT_SUPPORTED')
+        if json['code'] in self.error_codes:
+            raise YandexTranslateException(self.error_codes[json['code']])
         else:
             return json
 if __name__ == "__main__":
