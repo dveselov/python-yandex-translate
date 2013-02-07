@@ -71,15 +71,20 @@ class YandexTranslate(object):
         200
         >>> len(result['lang'])
         2
+        >>> translate.detect('なのです')
+        Traceback (most recent call last):
+        YandexTranslateException: ERR_LANG_NOT_SUPPORTED
         """
         data = urlencode({'text': text, 'format': format})
-        result = urlopen(self.api_urls['detect'] % data).read()
-        return loads(result.decode("utf-8"))
+        result = loads(urlopen(self.api_urls['detect'] % data).read().decode("utf-8"))
+        if not result['lang']:
+            raise YandexTranslateException(self.error_codes[501])
+        return result
 
-    def translate(self, lang, text, format='plain'):
+    def translate(self, text, lang, format='plain'):
         """
         Translate text to passed language
-        @in: language='ru', text='Hello, world!', format=['plain', 'html']
+        @in: text='Hello, world!', language='ru', format=['plain', 'html']
         @out: dict={'lang': 'en-ru', 'text': 'Hello, world!', 'code': 200}
         >>> translate = YandexTranslate()
         >>> result = translate.translate(lang='ru', text='Hello, world!')
