@@ -16,4 +16,4 @@ setup(name='yandex_translate',
       ],
       long_description=open('README.md').read(),
       platforms=['All'],
-)
+      )
