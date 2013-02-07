@@ -36,9 +36,11 @@ class YandexTranslate(object):
         3
         """
         self.api_urls = {
-            'get_langs': 'http://translate.yandex.net/api/v1/tr.json/getLangs?%s',
+            'get_langs': 'http://translate.yandex.net/api/v1/tr.json/'
+            'getLangs?%s',
             'detect': 'http://translate.yandex.net/api/v1/tr.json/detect?%s',
-            'translate': 'http://translate.yandex.net/api/v1/tr.json/translate?%s',
+            'translate': 'http://translate.yandex.net/api/v1/tr.json/'
+            'translate?%s',
         }
         self.error_codes = {
             413: "ERR_TEXT_TOO_LONG",
@@ -76,7 +78,8 @@ class YandexTranslate(object):
         YandexTranslateException: ERR_LANG_NOT_SUPPORTED
         """
         data = urlencode({'text': text, 'format': format})
-        result = loads(urlopen(self.api_urls['detect'] % data).read().decode("utf-8"))
+        result = loads(
+            urlopen(self.api_urls['detect'] % data).read().decode("utf-8"))
         if not result['lang']:
             raise YandexTranslateException(self.error_codes[501])
         return result
