@@ -1,6 +1,8 @@
 python-yandex-translate
 =======================
 
+[![Build Status](https://travis-ci.org/vdmitrij/python-yandex-translate.png?branch=master)](https://travis-ci.org/vdmitrij/python-yandex-translate)
+
 Python library for Yandex Translate API.
 
 This module is fully-compatible with Python 2 and 3 versions.
