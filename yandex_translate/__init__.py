@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*-coding:utf-8-*-
+#-*- coding:utf-8 -*-
 
 __version__ = "0.1"
 
@@ -35,6 +35,9 @@ class YandexTranslate(object):
         >>> len(translate.error_codes)
         3
         """
+        self.cache = {
+            'languages': None,
+        }
         self.api_urls = {
             'get_langs': 'http://translate.yandex.net/api/v1/tr.json/'
             'getLangs?%s',
