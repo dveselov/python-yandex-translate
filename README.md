@@ -1,7 +1,7 @@
 python-yandex-translate
 =======================
 
-[![Build Status](https://travis-ci.org/vdmitrij/python-yandex-translate.png?branch=master)](https://travis-ci.org/vdmitrij/python-yandex-translate)
+[![Build Status](https://travis-ci.org/vdmitrij/python-yandex-translate.png?branch=master)](https://travis-ci.org/vdmitrij/python-yandex-translate) [![Coverage Status](https://coveralls.io/repos/vdmitrij/python-yandex-translate/badge.png?branch=master)](https://coveralls.io/r/vdmitrij/python-yandex-translate)
 
 Python library for Yandex Translate API.
 
