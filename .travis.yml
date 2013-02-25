@@ -4,6 +4,7 @@ python:
   - "3.3"
 before_script:
   - pip install --use-mirrors coveralls
+  - pip install --use-mirrors HTTPretty
 script: 
   - coverage run tests.py
 after_success:
