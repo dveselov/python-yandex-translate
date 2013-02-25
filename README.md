@@ -5,7 +5,7 @@ python-yandex-translate
 
 Python library for Yandex Translate API.
 
-This module is fully-compatible with Python 2 and 3 versions.
+This module is fully-compatible with Python 2.7+ and 3.3+ versions.
 
 Example from tests.py:
 
