@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #-*-coding:utf-8-*-
 import unittest
+from httpretty import HTTPretty
+from httpretty import httprettified
 from yandex_translate import *
 
 
@@ -49,6 +51,30 @@ class YandexTranslateTest(unittest.TestCase):
         self.translate.api_urls['translate'] = 'http://none.local/%s'
         with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.translate('Hello, world!', 'en')
+
+    @httprettified
+    def test_languages_invalid_json(self):
+        HTTPretty.register_uri(HTTPretty.GET, self.translate.api_urls['langs'],
+                           body='[this{is)invalid JSON}',
+                           content_type="application/json")
+        with self.assertRaises(YandexTranslateException):
+            self.translate.langs
+
+    @httprettified
+    def test_detection_invalid_json(self):
+        HTTPretty.register_uri(HTTPretty.GET, self.translate.api_urls['detect'],
+                           body='[this{is)invalid JSON}',
+                           content_type="application/json")
+        with self.assertRaises(YandexTranslateException):
+            self.translate.detect(text='Hello, world!')
+
+    @httprettified
+    def test_translate_invalid_json(self):
+        HTTPretty.register_uri(HTTPretty.GET, self.translate.api_urls['translate'],
+                           body='[this{is)invalid JSON}',
+                           content_type="application/json")
+        with self.assertRaises(YandexTranslateException):
+            self.translate.translate(text='Hello, world!', lang='ru')
 
 
 if __name__ == '__main__':
