@@ -18,29 +18,34 @@ class YandexTranslateTest(unittest.TestCase):
         cached_languages = self.translate.langs
         self.assertEqual(languages, cached_languages)
 
-    def test_not_cached_languages(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
-            self.translate.api_urls['langs'] = 'http://none.local/%s'
-            self.translate.langs
-
     def test_language_detection(self):
         language = self.translate.detect(text='Hello, world!')
         self.assertEqual(language, 'en')
-
-    def test_language_detection_raising(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_LANG_NOT_SUPPORTED"):
-            self.translate.detect('なのです')
 
     def test_translate(self):
         result = self.translate.translate('Hello, world!', 'ru')
         self.assertEqual(result['text'][0], u'Здравствуй, мир!')
         self.assertEqual(result['code'], 200)
 
-    def test_translate_langs_raising(self):
+    def test_language_detection_error(self):
+        with self.assertRaises(YandexTranslateException, msg="ERR_LANG_NOT_SUPPORTED"):
+            self.translate.detect('なのです')
+
+    def test_translate_error(self):
         with self.assertRaises(YandexTranslateException, msg="ERR_LANG_NOT_SUPPORTED"):
             self.translate.translate('なのです', 'ru')
 
-    def test_translate_network_error_raising(self):
+    def test_languages_network_error(self):
+        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
+            self.translate.api_urls['langs'] = 'http://none.local/%s'
+            self.translate.langs
+
+    def test_detection_network_error(self):
+        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
+            self.translate.api_urls['detect'] = 'http://detect.local/?%s'
+            self.translate.detect(text='Hello, world!')
+
+    def test_translate_network_error(self):
         self.translate.api_urls['translate'] = 'http://none.local/%s'
         with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.translate('Hello, world!', 'en')
