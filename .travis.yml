@@ -6,6 +6,6 @@ python:
 before_script:
   - pip install --use-mirrors coveralls
 script: 
-  - coverage run yandex_translate/__init__.py -v
+  - coverage run tests.py
 after_success:
   - coveralls
