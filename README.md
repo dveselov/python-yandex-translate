@@ -3,11 +3,11 @@ python-yandex-translate
 
 [![Build Status](https://travis-ci.org/vdmitrij/python-yandex-translate.png?branch=master)](https://travis-ci.org/vdmitrij/python-yandex-translate) [![Coverage Status](https://coveralls.io/repos/vdmitrij/python-yandex-translate/badge.png?branch=master)](https://coveralls.io/r/vdmitrij/python-yandex-translate)
 
-Python library for Yandex Translate API.
+Python module for Yandex.Translate API.
 
 This module is fully-compatible with Python 2.7+ and 3.3+ versions.
 
-Example from tests.py:
+Typical usage:
 
 ```python
 from yandex_translate import *
