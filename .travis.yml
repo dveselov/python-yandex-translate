@@ -6,6 +6,6 @@ before_script:
   - pip install --use-mirrors coveralls
   - pip install --use-mirrors HTTPretty
 script: 
-  - coverage run tests.py
+  - coverage run --source=yandex_translate tests.py
 after_success:
   - coveralls
