@@ -10,6 +10,5 @@ script:
 after_success:
   - coveralls
 notifications:
-  on_success: always
   webhooks:
     - https://travisci-connector.appsecute.com/travisci/webhook?secret=ece099f0-82ff-11e2-ae84-213a25172843
