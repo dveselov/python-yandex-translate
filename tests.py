@@ -7,7 +7,7 @@ from yandex_translate import *
 
 class YandexTranslateTest(unittest.TestCase):
     def setUp(self):
-        self.translate = YandexTranslate()
+        self.translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
 
     def test_langs(self):
         languages = self.translate.langs
@@ -50,6 +50,10 @@ class YandexTranslateTest(unittest.TestCase):
         self.translate.api_urls['translate'] = 'http://none.local/%s'
         with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.translate('Hello, world!', 'en')
+
+    def test_without_key(self):
+        with self.assertRaises(YandexTranslateException, msg="Please, provide key for Yandex.Translate API: https://translate.yandex.ru/apikeys"):
+            translate = YandexTranslate()
 
     @httprettified
     def test_languages_invalid_json(self):

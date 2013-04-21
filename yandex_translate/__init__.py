@@ -25,10 +25,10 @@ class YandexTranslate(object):
     Class for detect language of text and translate it via Yandex.Translate API
     >>> translate = YandexTranslate()
     """
-    def __init__(self):
+    def __init__(self, key=None):
         """
         Class constructor
-        >>> translate = YandexTranslate()
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> len(translate.api_urls)
         3
         >>> len(translate.error_codes)
@@ -46,18 +46,25 @@ class YandexTranslate(object):
             'translate?%s',
         }
         self.error_codes = {
+            401: "ERR_KEY_INVALID",
+            402: "ERR_KEY_BLOCKED",
+            403: "ERR_DAILY_REQ_LIMIT_EXCEEDED",
+            404: "ERR_DAILY_CHAR_LIMIT_EXCEEDED",
             413: "ERR_TEXT_TOO_LONG",
             422: "ERR_UNPROCESSABLE_TEXT",
             501: "ERR_LANG_NOT_SUPPORTED",
             503: "ERR_SERVICE_NOT_AVAIBLE",
         }
+        if not key:
+            raise YandexTranslateException('Please, provide key for Yandex.Translate API: https://translate.yandex.ru/apikeys')
+        self.api_key = key
 
     @property
     def langs(self, cache=True):
         """
         Returns a array of languages for translate
         :returns: List with translate derections
-        >>> translate = YandexTranslate()
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> languages = translate.langs
         >>> len(languages) > 0
         True
@@ -73,7 +80,8 @@ class YandexTranslate(object):
         """
         try:
             if not self.cache['languages'] and cache:
-                result = urlopen(self.api_urls['langs']).read()
+                data = urlencode({'key': self.api_key})
+                result = urlopen(self.api_urls['langs'] % data).read()
                 self.cache['languages'] = loads(result.decode("utf-8"))['dirs']
         except IOError:
             raise YandexTranslateException(self.error_codes[503])
@@ -87,7 +95,7 @@ class YandexTranslate(object):
         :param text: A string for language detection
         :param format: String with text format. 'plain' or 'html'.
         :returns: String with language code in ISO format. 'en', for example.
-        >>> translate = YandexTranslate()
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.detect(text='Hello, world!')
         >>> result == 'en'
         True
@@ -99,7 +107,7 @@ class YandexTranslate(object):
         Traceback (most recent call last):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
-        data = urlencode({'text': text, 'format': format})
+        data = urlencode({'text': text, 'format': format, 'key': self.api_key})
         try:
             response = urlopen(self.api_urls['detect'] % data).read().decode("utf-8")
             result = loads(response)
@@ -117,7 +125,7 @@ class YandexTranslate(object):
         :param text: Source text
         :param lang: Result language. 'en-ru' for English to Russian translation or just 'ru' for autodetect source language and translate it to Russian.
         :param format: 'plain' or 'html', with chars escaping or not.
-        >>> translate = YandexTranslate()
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.translate(lang='ru', text='Hello, world!')
         >>> result['code'] == 200
         True
@@ -131,7 +139,7 @@ class YandexTranslate(object):
         Traceback (most recent call last):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
-        data = urlencode({'text': text, 'format': format, 'lang': lang})
+        data = urlencode({'text': text, 'format': format, 'lang': lang, 'key': self.api_key})
         try:
             result = urlopen(self.api_urls['translate'] % data).read()
             json = loads(result.decode("utf-8"))
