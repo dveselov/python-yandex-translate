@@ -11,7 +11,7 @@ Typical usage:
 
 ```python
 from yandex_translate import *
-translate = YandexTranslate()
+translate = YandexTranslate('Your API key here.')
 print('Current languages:', translate.langs)
 print('Detect language:', translate.detect('Привет, мир!'))
 print('Translate:', translate.translate('Привет, мир!', 'ru-en'))  # or just 'en'
