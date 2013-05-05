@@ -3,7 +3,7 @@
 from distutils.core import setup
 import yandex_translate
 
-setup(name='yandex_translate',
+setup(name='yandex-translate',
       version=yandex_translate.__version__,
       author="Sofia Velmer",
       author_email="pyth0n3r@yandex.ru",
