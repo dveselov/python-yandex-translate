@@ -40,7 +40,8 @@ class YandexTranslate(object):
     def __init__(self, key=None):
         """
         Class constructor
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
+            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> len(translate.api_urls)
         3
         >>> len(translate.error_codes)
@@ -58,7 +59,7 @@ class YandexTranslate(object):
             'translate?%s',
         }
         if not key:
-            raise YandexTranslateException('Please, provide key for Yandex.Translate API: https://translate.yandex.ru/apikeys')
+            raise YandexTranslateException(self.error_codes[401])
         self.api_key = key
 
     @property
@@ -66,7 +67,8 @@ class YandexTranslate(object):
         """
         Returns a array of languages for translate
         :returns: List with translate derections
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
+            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> languages = translate.langs
         >>> len(languages) > 0
         True
@@ -97,7 +99,8 @@ class YandexTranslate(object):
         :param text: A string for language detection
         :param format: String with text format. 'plain' or 'html'.
         :returns: String with language code in ISO format. 'en', for example.
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
+            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.detect(text='Hello, world!')
         >>> result == 'en'
         True
@@ -127,7 +130,8 @@ class YandexTranslate(object):
         :param text: Source text
         :param lang: Result language. 'en-ru' for English to Russian translation or just 'ru' for autodetect source language and translate it to Russian.
         :param format: 'plain' or 'html', with chars escaping or not.
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
+            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.translate(lang='ru', text='Hello, world!')
         >>> result['code'] == 200
         True
