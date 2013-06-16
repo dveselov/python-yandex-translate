@@ -7,7 +7,8 @@ from yandex_translate import *
 
 class YandexTranslateTest(unittest.TestCase):
     def setUp(self):
-        self.translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        self.translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
+            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
 
     def test_langs(self):
         languages = self.translate.langs
@@ -29,30 +30,36 @@ class YandexTranslateTest(unittest.TestCase):
         self.assertEqual(result['code'], 200)
 
     def test_language_detection_error(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_LANG_NOT_SUPPORTED"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="ERR_LANG_NOT_SUPPORTED"):
             self.translate.detect('なのです')
 
     def test_translate_error(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_LANG_NOT_SUPPORTED"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="ERR_LANG_NOT_SUPPORTED"):
             self.translate.translate('なのです', 'ru')
 
     def test_languages_network_error(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.api_urls['langs'] = 'http://none.local/%s'
             self.translate.langs
 
     def test_detection_network_error(self):
-        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.api_urls['detect'] = 'http://detect.local/?%s'
             self.translate.detect(text='Hello, world!')
 
     def test_translate_network_error(self):
         self.translate.api_urls['translate'] = 'http://none.local/%s'
-        with self.assertRaises(YandexTranslateException, msg="ERR_SERVICE_NOT_AVAIBLE"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="ERR_SERVICE_NOT_AVAIBLE"):
             self.translate.translate('Hello, world!', 'en')
 
     def test_without_key(self):
-        with self.assertRaises(YandexTranslateException, msg="Please, provide key for Yandex.Translate API: https://translate.yandex.ru/apikeys"):
+        with self.assertRaises(YandexTranslateException, \
+         msg="Please, provide key for Yandex.Translate API: https://translate.yandex.ru/apikeys"):
             translate = YandexTranslate()
 
     @httprettified
