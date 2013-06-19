@@ -7,7 +7,25 @@ Python module for Yandex.Translate API.
 
 This module is fully-compatible with Python 2.7+ and 3.3+ versions.
 
-Typical usage:
+
+Installation
+======================
+Use `pip`:
+
+```bash
+pip install yandex.translate
+```
+
+Or `easy_install`:
+
+```bash
+easy_install yandex.translate
+```
+
+
+Usage
+=======================
+
 
 ```python
 from yandex_translate import *
