@@ -53,9 +53,9 @@ class YandexTranslate(object):
             'languages': None,
         }
         self.api_urls = {
-            'langs': 'http://translate.yandex.net/api/v1/tr.json/getLangs?%s',
-            'detect': 'http://translate.yandex.net/api/v1/tr.json/detect?%s',
-            'translate': 'http://translate.yandex.net/api/v1/tr.json/'
+            'langs': 'https://translate.yandex.net/api/v1.5/tr.json/getLangs?%s',
+            'detect': 'https://translate.yandex.net/api/v1.5/tr.json/detect?%s',
+            'translate': 'https://translate.yandex.net/api/v1.5/tr.json/'
             'translate?%s',
         }
         if not key:
