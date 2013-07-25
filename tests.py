@@ -15,6 +15,12 @@ class YandexTranslateTest(unittest.TestCase):
         languages = self.translate.langs
         self.assertGreater(len(languages), 1)
 
+    def test_blocked_key(self):
+        translate = YandexTranslate('trnsl.1.1.20130723T112255Z.cfcd2b1ebae9f'
+                                    'ff1.86f3d1de3621e69b8c432fcdd6803bb87ef0e963')
+        with self.assertRaises(YandexTranslateException):
+            languages = translate.detect('Hello!')
+
     def test_cached_languages(self):
         languages = self.translate.langs
         self.translate.api_urls['langs'] = 'http://none.local/%s'
@@ -64,6 +70,12 @@ class YandexTranslateTest(unittest.TestCase):
                                'Yandex.Translate API: ' \
                                'https://translate.yandex.ru/apikeys"):
             translate = YandexTranslate()
+
+    def test_invalid_key(self):
+        with self.assertRaises(YandexTranslateException,
+                               msg="ERR_KEY_INVALID"):
+            translate = YandexTranslate('my-invalid-key')
+            language = translate.detect('Hello!')
 
     @httprettified
     def test_languages_invalid_json(self):
