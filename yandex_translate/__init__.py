@@ -120,7 +120,9 @@ class YandexTranslate(object):
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:
             raise YandexTranslateException(response)
-        if not result['lang']:
+        if result['code'] in self.error_codes:
+            raise YandexTranslateException(self.error_codes[result['code']])
+        elif not result['lang']:
             raise YandexTranslateException(self.error_codes[501])
         return result['lang']
 
