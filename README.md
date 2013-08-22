@@ -1,7 +1,7 @@
 python-yandex-translate
 =======================
 
-[![Build Status](https://travis-ci.org/valmet/python-yandex-translate.png?branch=master)](https://travis-ci.org/valmet/python-yandex-translate) [![Coverage Status](https://coveralls.io/repos/valmet/python-yandex-translate/badge.png?branch=master)](https://coveralls.io/r/valmet/python-yandex-translate) [![codeq](https://codeq.io/github/valmet/python-yandex-translate/badges/master.png)](https://codeq.io/github/valmet/python-yandex-translate/branches/master) [![Downloads](https://pypip.in/d/yandex.translate/badge.png)](https://crate.io/packages/yandex.translate) [![Downloads](https://pypip.in/v/yandex.translate/badge.png)](https://crate.io/packages/yandex.translate)
+[![Build Status](https://travis-ci.org/valmet/python-yandex-translate.png?branch=master)](https://travis-ci.org/valmet/python-yandex-translate) [![Coverage Status](https://coveralls.io/repos/valmet/python-yandex-translate/badge.png?branch=master)](https://coveralls.io/r/valmet/python-yandex-translate) [![Downloads](https://pypip.in/d/yandex.translate/badge.png)](https://crate.io/packages/yandex.translate) [![Downloads](https://pypip.in/v/yandex.translate/badge.png)](https://crate.io/packages/yandex.translate)
 
 Python module for Yandex.Translate API.
 
