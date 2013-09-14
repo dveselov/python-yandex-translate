@@ -8,6 +8,7 @@ from requests.exceptions import ConnectionError
 
 
 class YandexTranslateException(Exception):
+
     """
     Default YandexTranslate exception
     >>> YandexTranslateException("DoctestError")
@@ -17,6 +18,7 @@ class YandexTranslateException(Exception):
 
 
 class YandexTranslate(object):
+
     """
     Class for detect language of text and translate it via Yandex.Translate API
     >>> translate = YandexTranslate()
@@ -33,10 +35,12 @@ class YandexTranslate(object):
         503: "ERR_SERVICE_NOT_AVAIBLE",
     }
 
-    api_urls = {
-        'langs': 'https://translate.yandex.net/api/v1.5/tr.json/getLangs',
-        'detect': 'https://translate.yandex.net/api/v1.5/tr.json/detect',
-        'translate': 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+    api_url = 'https://translate.yandex.net/api/{version}/tr.json/{endpoint}'
+    api_version = 'v1.5'
+    api_endpoints = {
+        'langs': 'getLangs',
+        'detect': 'detect',
+        'translate': 'translate',
     }
 
     def __init__(self, key=None):
@@ -54,6 +58,13 @@ class YandexTranslate(object):
         if not key:
             raise YandexTranslateException(self.error_codes[401])
         self.api_key = key
+
+    def url(self, endpoint):
+        """
+        Returns full URL for specified API endpoint
+        """
+        return self.api_url.format(version=self.api_version,
+                                   endpoint=self.api_endpoints[endpoint])
 
     @property
     def langs(self, cache=True):
@@ -76,7 +87,8 @@ class YandexTranslate(object):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
         try:
-            response = requests.get(self.api_urls['langs'], params={'key': self.api_key})
+            response = requests.get(
+                self.url('langs'), params={'key': self.api_key})
             response = response.json()
         except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
@@ -114,7 +126,7 @@ class YandexTranslate(object):
             'key': self.api_key,
         }
         try:
-            response = requests.post(self.api_urls['detect'], data=data)
+            response = requests.post(self.url('detect'), data=data)
             response = response.json()
         except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
@@ -156,7 +168,7 @@ class YandexTranslate(object):
             'key': self.api_key
         }
         try:
-            response = requests.post(self.api_urls['translate'], data=data)
+            response = requests.post(self.url('translate'), data=data)
             response = response.json()
         except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
