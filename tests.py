@@ -53,32 +53,5 @@ class YandexTranslateTest(unittest.TestCase):
             translate = YandexTranslate('my-invalid-key')
             language = translate.detect('Hello!')
 
-    @httprettified
-    def test_languages_invalid_json(self):
-        HTTPretty.register_uri(HTTPretty.GET, self.translate.api_urls['langs'],
-                               body='[this{is)invalid JSON}',
-                               content_type="application/json")
-        with self.assertRaises(YandexTranslateException):
-            self.translate.langs
-
-    @httprettified
-    def test_detection_invalid_json(self):
-        HTTPretty.register_uri(
-            HTTPretty.POST, self.translate.api_urls['detect'],
-            body='[this{is)invalid JSON}',
-            content_type="application/json")
-        with self.assertRaises(YandexTranslateException):
-            self.translate.detect(text='Hello, world!')
-
-    @httprettified
-    def test_translate_invalid_json(self):
-        HTTPretty.register_uri(
-            HTTPretty.POST, self.translate.api_urls['translate'],
-            body='[this{is)invalid JSON}',
-            content_type="application/json")
-        with self.assertRaises(YandexTranslateException):
-            self.translate.translate(text='Hello, world!', lang='ru')
-
-
 if __name__ == '__main__':
     unittest.main()
