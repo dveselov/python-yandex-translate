@@ -21,12 +21,6 @@ class YandexTranslateTest(unittest.TestCase):
         with self.assertRaises(YandexTranslateException):
             languages = translate.detect('Hello!')
 
-    def test_cached_languages(self):
-        languages = self.translate.langs
-        self.translate.api_urls['langs'] = 'http://none.local/%s'
-        cached_languages = self.translate.langs
-        self.assertEqual(languages, cached_languages)
-
     def test_language_detection(self):
         language = self.translate.detect(text='Hello, world!')
         self.assertEqual(language, 'en')
@@ -45,24 +39,6 @@ class YandexTranslateTest(unittest.TestCase):
         with self.assertRaises(YandexTranslateException,
                                msg="ERR_LANG_NOT_SUPPORTED"):
             self.translate.translate('なのです', 'ru')
-
-    def test_languages_network_error(self):
-        with self.assertRaises(YandexTranslateException,
-                               msg="ERR_SERVICE_NOT_AVAIBLE"):
-            self.translate.api_urls['langs'] = 'http://none.local/%s'
-            self.translate.langs
-
-    def test_detection_network_error(self):
-        with self.assertRaises(YandexTranslateException,
-                               msg="ERR_SERVICE_NOT_AVAIBLE"):
-            self.translate.api_urls['detect'] = 'http://detect.local/?%s'
-            self.translate.detect(text='Hello, world!')
-
-    def test_translate_network_error(self):
-        self.translate.api_urls['translate'] = 'http://none.local/%s'
-        with self.assertRaises(YandexTranslateException,
-                               msg="ERR_SERVICE_NOT_AVAIBLE"):
-            self.translate.translate('Hello, world!', 'en')
 
     def test_without_key(self):
         with self.assertRaises(YandexTranslateException,
@@ -88,7 +64,7 @@ class YandexTranslateTest(unittest.TestCase):
     @httprettified
     def test_detection_invalid_json(self):
         HTTPretty.register_uri(
-            HTTPretty.GET, self.translate.api_urls['detect'],
+            HTTPretty.POST, self.translate.api_urls['detect'],
             body='[this{is)invalid JSON}',
             content_type="application/json")
         with self.assertRaises(YandexTranslateException):
@@ -97,7 +73,7 @@ class YandexTranslateTest(unittest.TestCase):
     @httprettified
     def test_translate_invalid_json(self):
         HTTPretty.register_uri(
-            HTTPretty.GET, self.translate.api_urls['translate'],
+            HTTPretty.POST, self.translate.api_urls['translate'],
             body='[this{is)invalid JSON}',
             content_type="application/json")
         with self.assertRaises(YandexTranslateException):

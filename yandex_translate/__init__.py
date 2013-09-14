@@ -3,12 +3,8 @@
 
 __version__ = "0.3.2"
 
-try:
-    from urllib import urlopen, urlencode
-except:
-    from urllib.request import urlopen
-    from urllib.parse import urlencode
-from json import loads
+import requests
+from requests.exceptions import ConnectionError
 
 
 class YandexTranslateException(Exception):
@@ -37,6 +33,12 @@ class YandexTranslate(object):
         503: "ERR_SERVICE_NOT_AVAIBLE",
     }
 
+    api_urls = {
+        'langs': 'https://translate.yandex.net/api/v1.5/tr.json/getLangs',
+        'detect': 'https://translate.yandex.net/api/v1.5/tr.json/detect',
+        'translate': 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+    }
+
     def __init__(self, key=None):
         """
         Class constructor
@@ -49,15 +51,6 @@ class YandexTranslate(object):
         >>> len(translate.cache)
         1
         """
-        self.cache = {
-            'languages': None,
-        }
-        self.api_urls = {
-            'langs': 'https://translate.yandex.net/api/v1.5/tr.json/getLangs?%s',
-            'detect': 'https://translate.yandex.net/api/v1.5/tr.json/detect?%s',
-            'translate': 'https://translate.yandex.net/api/v1.5/tr.json/'
-            'translate?%s',
-        }
         if not key:
             raise YandexTranslateException(self.error_codes[401])
         self.api_key = key
@@ -83,15 +76,18 @@ class YandexTranslate(object):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
         try:
-            if not self.cache['languages'] and cache:
-                data = urlencode({'key': self.api_key})
-                result = urlopen(self.api_urls['langs'] % data).read()
-                self.cache['languages'] = loads(result.decode("utf-8"))['dirs']
-        except IOError:
+            response = requests.get(self.api_urls['langs'], params={'key': self.api_key})
+            response = response.json()
+        except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:
-            raise YandexTranslateException(result)
-        return self.cache['languages']
+            raise YandexTranslateException(response)
+        try:
+            code = response['code']
+            raise YandexTranslateException(self.error_codes[code])
+        except KeyError:
+            pass
+        return response['dirs']
 
     def detect(self, text, format='plain'):
         """
@@ -112,19 +108,25 @@ class YandexTranslate(object):
         Traceback (most recent call last):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
-        data = urlencode({'text': text, 'format': format, 'key': self.api_key})
+        data = {
+            'text': text,
+            'format': format,
+            'key': self.api_key,
+        }
         try:
-            response = urlopen(self.api_urls['detect'] % data).read().decode("utf-8")
-            result = loads(response)
-        except IOError:
+            response = requests.post(self.api_urls['detect'], data=data)
+            response = response.json()
+        except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:
             raise YandexTranslateException(response)
-        if result['code'] in self.error_codes:
-            raise YandexTranslateException(self.error_codes[result['code']])
-        elif not result['lang']:
-            raise YandexTranslateException(self.error_codes[501])
-        return result['lang']
+        try:
+            code = response['code']
+            raise YandexTranslateException(self.error_codes[code])
+        except KeyError:
+            if not response['lang']:
+                raise YandexTranslateException(self.error_codes[501])
+        return response['lang']
 
     def translate(self, text, lang, format='plain'):
         """
@@ -147,18 +149,26 @@ class YandexTranslate(object):
         Traceback (most recent call last):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
-        data = urlencode({'text': text, 'format': format, 'lang': lang, 'key': self.api_key})
+        data = {
+            'text': text,
+            'format': format,
+            'lang': lang,
+            'key': self.api_key
+        }
         try:
-            result = urlopen(self.api_urls['translate'] % data).read()
-            json = loads(result.decode("utf-8"))
-        except IOError:
+            response = requests.post(self.api_urls['translate'], data=data)
+            response = response.json()
+        except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:
-            raise YandexTranslateException(result)
-        if json['code'] in self.error_codes:
-            raise YandexTranslateException(self.error_codes[json['code']])
-        else:
-            return json
+            raise YandexTranslateException(response)
+        try:
+            code = response['code']
+            raise YandexTranslateException(self.error_codes[code])
+        except KeyError:
+            pass
+        return response
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

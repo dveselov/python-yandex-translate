@@ -3,6 +3,7 @@ python:
   - "2.7"
   - "3.3"
 before_script:
+  - pip install --use-mirrors requests
   - pip install --use-mirrors coveralls
   - pip install --use-mirrors HTTPretty==0.5.14
 script: 
