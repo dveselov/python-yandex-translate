@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
 import unittest
-from httpretty import *
 from yandex_translate import *
 
 
