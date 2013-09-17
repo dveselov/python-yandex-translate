@@ -46,14 +46,11 @@ class YandexTranslate(object):
     def __init__(self, key=None):
         """
         Class constructor
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
-            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
-        >>> len(translate.api_urls)
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> len(translate.api_endpoints)
         3
         >>> len(translate.error_codes)
-        4
-        >>> len(translate.cache)
-        1
+        8
         """
         if not key:
             raise YandexTranslateException(self.error_codes[401])
@@ -62,6 +59,14 @@ class YandexTranslate(object):
     def url(self, endpoint):
         """
         Returns full URL for specified API endpoint
+        :param endpoint: String with endpoint name
+        >>> translate = YandexTranslate('api-key')
+        >>> translate.url('langs')
+        'https://translate.yandex.net/api/v1.5/tr.json/getLangs'
+        >>> translate.url('detect')
+        'https://translate.yandex.net/api/v1.5/tr.json/detect'
+        >>> translate.url('translate')
+        'https://translate.yandex.net/api/v1.5/tr.json/translate'
         """
         return self.api_url.format(version=self.api_version,
                                    endpoint=self.api_endpoints[endpoint])
@@ -71,20 +76,10 @@ class YandexTranslate(object):
         """
         Returns a array of languages for translate
         :returns: List with translate derections
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
-            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> languages = translate.langs
         >>> len(languages) > 0
         True
-        >>> translate.api_urls['langs'] = 'http://langs.local/%s'
-        >>> languages = translate.langs # cached languages
-        >>> len(languages) > 0
-        True
-        >>> translate = YandexTranslate()
-        >>> translate.api_urls['langs'] = 'http://langs.local/%s'
-        >>> translate.langs
-        Traceback (most recent call last):
-        YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
         try:
             response = requests.get(
@@ -107,18 +102,13 @@ class YandexTranslate(object):
         :param text: A string for language detection
         :param format: String with text format. 'plain' or 'html'.
         :returns: String with language code in ISO format. 'en', for example.
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
-            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.detect(text='Hello, world!')
         >>> result == 'en'
         True
         >>> translate.detect('なのです')
         Traceback (most recent call last):
         YandexTranslateException: ERR_LANG_NOT_SUPPORTED
-        >>> translate.api_urls['detect'] = 'http://detect.local/?%s'
-        >>> result = translate.detect(text='Hello, world!')
-        Traceback (most recent call last):
-        YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
         data = {
             'text': text,
@@ -146,8 +136,7 @@ class YandexTranslate(object):
         :param text: Source text
         :param lang: Result language. 'en-ru' for English to Russian translation or just 'ru' for autodetect source language and translate it to Russian.
         :param format: 'plain' or 'html', with chars escaping or not.
-        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a'
-            '33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
+        >>> translate = YandexTranslate('trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e')
         >>> result = translate.translate(lang='ru', text='Hello, world!')
         >>> result['code'] == 200
         True
@@ -156,10 +145,6 @@ class YandexTranslate(object):
         >>> result = translate.translate('なのです', 'en')
         Traceback (most recent call last):
         YandexTranslateException: ERR_LANG_NOT_SUPPORTED
-        >>> translate.api_urls['translate'] = 'http://translate.local/?%s'
-        >>> result = translate.translate(lang='ru', text='Hello, world!')
-        Traceback (most recent call last):
-        YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
         data = {
             'text': text,
