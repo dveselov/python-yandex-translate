@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from distutils.core import setup
+from setuptools import setup
 import yandex_translate
 
 setup(name='yandex.translate',
@@ -23,4 +23,5 @@ setup(name='yandex.translate',
           'Programming Language :: Python :: 3.3',
       ],
       platforms=['All'],
+      install_requires=['requests>=1.2.3'],
       )
