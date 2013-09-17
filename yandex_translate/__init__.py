@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding:utf-8
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 import requests
 from requests.exceptions import ConnectionError
