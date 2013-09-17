@@ -51,6 +51,11 @@ class YandexTranslateTest(unittest.TestCase):
                                'https://translate.yandex.ru/apikeys"):
             translate = YandexTranslate()
 
+    def test_error_long_text(self):
+        with self.assertRaises(YandexTranslateException, 
+                               msg="ERR_TEXT_TOO_LONG"):
+            self.translate.translate('hi! '*4098, 'ru')
+
     def test_invalid_key(self):
         with self.assertRaises(YandexTranslateException,
                                msg="ERR_KEY_INVALID"):
