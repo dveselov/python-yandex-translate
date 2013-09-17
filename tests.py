@@ -25,8 +25,13 @@ class YandexTranslateTest(unittest.TestCase):
         self.assertEqual(language, 'en')
 
     def test_translate(self):
-        result = self.translate.translate('Hello!', 'ru')
+        result = self.translate.translate(u'Hello!', 'ru')
         self.assertEqual(result['text'][0], u'Здравствуйте!')
+        self.assertEqual(result['code'], 200)
+
+    def test_translate_in_another_direction(self):
+        result = self.translate.translate(u'Здравствуйте', 'en')
+        self.assertEqual(result['text'][0], u'Hello')
         self.assertEqual(result['code'], 200)
 
     def test_language_detection_error(self):
