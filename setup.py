@@ -1,11 +1,10 @@
 # coding: utf-8
 
 from setuptools import setup
-import yandex_translate
 
 setup(name='yandex.translate',
-      version=yandex_translate.__version__,
-      author="Sofia Velmer",
+      version='0.3.4',
+      author="Nae Tennouji",
       author_email="me@require.pm",
       description='Python library for Yandex.Translate API.',
       license="DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
