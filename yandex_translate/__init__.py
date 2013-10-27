@@ -93,6 +93,11 @@ class YandexTranslate(object):
             pass
         return response['dirs']
 
+    @property
+    def _langs(self):
+      langs = self.langs
+      return [x.split('-')[0] for x in langs]
+
     def detect(self, text, format='plain'):
         """
         Specifies the language of the text
