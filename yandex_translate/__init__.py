@@ -5,22 +5,11 @@ from requests.exceptions import ConnectionError
 
 
 class YandexTranslateException(Exception):
-
     """
     Default YandexTranslate exception
     >>> YandexTranslateException("DoctestError")
     YandexTranslateException('DoctestError',)
     """
-    pass
-
-
-class YandexTranslate(object):
-
-    """
-    Class for detect language of text and translate it via Yandex.Translate API
-    >>> translate = YandexTranslate()
-    """
-
     error_codes = {
         401: "ERR_KEY_INVALID",
         402: "ERR_KEY_BLOCKED",
@@ -32,6 +21,16 @@ class YandexTranslate(object):
         503: "ERR_SERVICE_NOT_AVAIBLE",
     }
 
+    def __init__(self, status_code, *args, **kwargs):
+        message = self.error_codes.get(status_code)
+        super(YandexTranslateException, self).__init__(message, *args, **kwargs)
+
+
+class YandexTranslate(object):
+    """
+    Class for detect language of text and translate it via Yandex.Translate API
+    >>> translate = YandexTranslate()
+    """
     api_url = 'https://translate.yandex.net/api/{version}/tr.json/{endpoint}'
     api_version = 'v1.5'
     api_endpoints = {
@@ -50,7 +49,7 @@ class YandexTranslate(object):
         8
         """
         if not key:
-            raise YandexTranslateException(self.error_codes[401])
+            raise YandexTranslateException(401)
         self.api_key = key
 
     def url(self, endpoint):
@@ -79,24 +78,20 @@ class YandexTranslate(object):
         True
         """
         try:
-            response = requests.get(
-                self.url('langs'), params={'key': self.api_key})
+            response = requests.get(self.url('langs'),
+                                    params={'key': self.api_key})
             response = response.json()
         except ConnectionError:
             raise YandexTranslateException(self.error_codes[503])
-        except ValueError:
-            raise YandexTranslateException(response)
-        try:
-            code = response['code']
-            raise YandexTranslateException(self.error_codes[code])
-        except KeyError:
-            pass
-        return response['dirs']
+        status_code = response.get('code', 200)
+        if not status_code is 200:
+            raise YandexTranslateException(status_code)
+        return response.get('dirs')
 
     @property
     def _langs(self):
       langs = self.langs
-      return [x.split('-')[0] for x in langs]
+      return set(x.split('-')[0] for x in langs)
 
     def detect(self, text, format='plain'):
         """
@@ -124,13 +119,13 @@ class YandexTranslate(object):
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:
             raise YandexTranslateException(response)
-        try:
-            code = response['code']
-            raise YandexTranslateException(self.error_codes[code])
-        except KeyError:
-            if not response['lang']:
-                raise YandexTranslateException(self.error_codes[501])
-        return response['lang']
+        language = response.get('lang', None)
+        status_code = response.get('code', 200)
+        if not status_code is 200:
+            raise YandexTranslateException(status_code)
+        elif not language:
+            raise YandexTranslateException(501)
+        return language
 
     def translate(self, text, lang, format='plain'):
         """
@@ -158,14 +153,10 @@ class YandexTranslate(object):
             response = requests.post(self.url('translate'), data=data)
             response = response.json()
         except ConnectionError:
-            raise YandexTranslateException(self.error_codes[503])
-        except ValueError:
-            raise YandexTranslateException(response)
-        try:
-            code = response['code']
-            raise YandexTranslateException(self.error_codes[code])
-        except KeyError:
-            pass
+            raise YandexTranslateException(503)
+        status_code = response.get('code', 200)
+        if not status_code is 200:
+            raise YandexTranslateException(status_code)
         return response
 
 if __name__ == "__main__":

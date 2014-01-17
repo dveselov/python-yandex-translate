@@ -14,6 +14,22 @@ class YandexTranslateTest(unittest.TestCase):
         languages = self.translate.langs
         self.assertGreater(len(languages), 1)
 
+    def test_underscore_langs(self):
+        languages = self.translate._langs
+        self.assertEqual(languages, set(
+            [
+                u'el', u'en', u'ca', u'it',
+                u'hy', u'cs', u'et', u'az',
+                u'es', u'ru', u'nl', u'pt',
+                u'no', u'tr', u'lv', u'lt',
+                u'ro', u'pl', u'be', u'fr',
+                u'bg', u'hr', u'de', u'da',
+                u'fi', u'hu', u'sr', u'sq',
+                u'sv', u'mk', u'sk', u'uk',
+                u'sl'
+            ]
+        ))
+
     def test_blocked_key(self):
         translate = YandexTranslate('trnsl.1.1.20130723T112255Z.cfcd2b1ebae9f'
                                     'ff1.86f3d1de3621e69b8c432fcdd6803bb87ef0e963')
@@ -39,10 +55,11 @@ class YandexTranslateTest(unittest.TestCase):
                                msg="ERR_LANG_NOT_SUPPORTED"):
             self.translate.detect('なのです')
 
-    def test_translate_error(self):
-        with self.assertRaises(YandexTranslateException,
-                               msg="ERR_LANG_NOT_SUPPORTED"):
-            self.translate.translate('なのです', 'ru')
+    # Yandex.Translate tries to translate this as english-to-russian
+    # def test_translate_error(self):
+    #     with self.assertRaises(YandexTranslateException,
+    #                            msg="ERR_LANG_NOT_SUPPORTED"):
+    #         self.translate.translate('なのです', 'ru')
 
     def test_without_key(self):
         with self.assertRaises(YandexTranslateException,
