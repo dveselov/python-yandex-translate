@@ -14,13 +14,6 @@ Use `pip`:
 pip install yandex.translate
 ```
 
-Or `easy_install`:
-
-```bash
-easy_install yandex.translate
-```
-
-
 Usage
 =======================
 
