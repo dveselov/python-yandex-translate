@@ -26,9 +26,10 @@ Usage
 
 
 ```python
-from yandex_translate import *
+from yandex_translate import YandexTranslate
 translate = YandexTranslate('Your API key here.')
-print('Current languages:', translate.langs)
+print('Languages:', translate.langs)
+print('Translate directions:', translate.directions)
 print('Detect language:', translate.detect('Привет, мир!'))
 print('Translate:', translate.translate('Привет, мир!', 'ru-en'))  # or just 'en'
 ```
@@ -36,9 +37,8 @@ print('Translate:', translate.translate('Привет, мир!', 'ru-en'))  # or
 This will output:
 
 ```
-Current languages:  ['ru-en', 'ru-pl', 'ru-uk', 'ru-de', 'ru-fr', 'ru-es', 'ru-it', 'ru-tr', 'en-ru', 'en-uk', 'en-de', 'en-tr', 'pl-ru', 'pl-uk', 'uk-ru', 'uk-en', 'uk-pl', 'uk-de', 'uk-fr', 'uk-es', 'uk-it', 'uk-tr', 'de-ru', 'de-en', 'de-uk', 'fr-ru', 'fr-uk', 'es-ru', 'es-uk', 'it-ru', 'it-uk', 'tr-ru', 'tr-en', 'tr-uk']
-
-Detect language: {'code': 200, 'lang': 'ru'}
-
+Languages: {'en', 'el', 'ca', 'it', ..}
+Translate directions: ['az-ru', 'be-bg', 'be-cs', ..]
+Detect language: 'ru'
 Translate: {'text': ['Hello, world!'], 'code': 200, 'lang': 'ru-en'}
 ```
