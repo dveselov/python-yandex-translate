@@ -3,8 +3,8 @@
 from setuptools import setup
 
 setup(name='yandex.translate',
-      version='0.3.4',
-      author="Nae Tennouji",
+      version='0.3.5',
+      author="yandex.translate contributors",
       author_email="me@require.pm",
       description='Python library for Yandex.Translate API.',
       license="DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
