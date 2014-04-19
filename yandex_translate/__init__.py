@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import requests
-from requests.exceptions import ConnectionError
+import requests.exceptions
 
 
 class YandexTranslateException(Exception):
@@ -71,9 +71,10 @@ class YandexTranslate(object):
     """
     try:
       response = requests.get(self.url("langs"), params={"key": self.api_key})
-      response = response.json()
-    except ConnectionError:
+    except requests.exceptions.ConnectionError:
       raise YandexTranslateException(self.error_codes[503])
+    else:
+      response = response.json()
     status_code = response.get("code", 200)
     if not status_code is 200:
       raise YandexTranslateException(status_code)
@@ -108,11 +109,12 @@ class YandexTranslate(object):
     }
     try:
       response = requests.post(self.url("detect"), data=data)
-      response = response.json()
     except ConnectionError:
       raise YandexTranslateException(self.error_codes[503])
     except ValueError:
       raise YandexTranslateException(response)
+    else:
+      response = response.json()
     language = response.get("lang", None)
     status_code = response.get("code", 200)
     if not status_code is 200:
@@ -142,9 +144,10 @@ class YandexTranslate(object):
     }
     try:
       response = requests.post(self.url("translate"), data=data)
-      response = response.json()
     except ConnectionError:
       raise YandexTranslateException(503)
+    else:
+      response = response.json()
     status_code = response.get("code", 200)
     if not status_code is 200:
       raise YandexTranslateException(status_code)
