@@ -58,7 +58,7 @@ class YandexTranslate(object):
     "https://translate.yandex.net/api/v1.5/tr.json/translate"
     """
     return self.api_url.format(version=self.api_version,
-                   endpoint=self.api_endpoints[endpoint])
+                               endpoint=self.api_endpoints[endpoint])
 
   @property
   def directions(self):
