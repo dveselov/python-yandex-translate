@@ -76,7 +76,7 @@ class YandexTranslate(object):
     else:
       response = response.json()
     status_code = response.get("code", 200)
-    if not status_code is 200:
+    if status_code != 200:
       raise YandexTranslateException(status_code)
     return response.get("dirs")
 
@@ -117,7 +117,7 @@ class YandexTranslate(object):
       response = response.json()
     language = response.get("lang", None)
     status_code = response.get("code", 200)
-    if not status_code is 200:
+    if status_code != 200:
       raise YandexTranslateException(status_code)
     elif not language:
       raise YandexTranslateException(501)
@@ -149,10 +149,11 @@ class YandexTranslate(object):
     else:
       response = response.json()
     status_code = response.get("code", 200)
-    if not status_code is 200:
+    if status_code != 200:
       raise YandexTranslateException(status_code)
     return response
 
 if __name__ == "__main__":
   import doctest
   doctest.testmod()
+
