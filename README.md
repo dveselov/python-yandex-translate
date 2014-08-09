@@ -35,3 +35,7 @@ Translate directions: ['az-ru', 'be-bg', 'be-cs', ..]
 Detect language: 'ru'
 Translate: {'text': ['Hello, world!'], 'code': 200, 'lang': 'ru-en'}
 ```
+
+License
+=======================
+WTFPL (Public Domain)
