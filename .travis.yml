@@ -8,3 +8,4 @@ install:
   - pip install requests
 script:
   - python -m unittest yandex_translate.tests
+
