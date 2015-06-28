@@ -1,5 +1,6 @@
 # coding: utf-8
-from distutils.core import setup
+from setuptools import setup
+from setuptools import find_packages
 
 
 setup(name='yandex.translate',
@@ -10,7 +11,7 @@ setup(name='yandex.translate',
       license="DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
       keywords="yandex yandex-translate translate",
       url="https://github.com/tyrannosaurus/python-yandex-translate",
-      packages=['yandex_translate'],
+      packages=find_packages(),
       package_dir={'yandex_translate': 'yandex_translate'},
       provides=['yandex_translate'],
       classifiers=[
