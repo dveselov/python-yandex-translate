@@ -1,4 +1,4 @@
-python-yandex-translate [![Build Status](https://travis-ci.org/tyrannosaurus/python-yandex-translate.png?branch=master)](https://travis-ci.org/tyrannosaurus/python-yandex-translate)
+python-yandex-translate [![Build Status](https://travis-ci.org/dveselov/python-yandex-translate.svg?branch=master)](https://travis-ci.org/dveselov/python-yandex-translate)
 =======================
 
 Python module for Yandex.Translate API.
