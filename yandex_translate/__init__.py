@@ -39,8 +39,6 @@ class YandexTranslate(object):
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
     >>> len(translate.api_endpoints)
     3
-    >>> len(translate.error_codes)
-    8
     """
     if not key:
       raise YandexTranslateException(401)
@@ -51,11 +49,11 @@ class YandexTranslate(object):
     Returns full URL for specified API endpoint
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
     >>> translate.url("langs")
-    "https://translate.yandex.net/api/v1.5/tr.json/getLangs"
+    'https://translate.yandex.net/api/v1.5/tr.json/getLangs'
     >>> translate.url("detect")
-    "https://translate.yandex.net/api/v1.5/tr.json/detect"
+    'https://translate.yandex.net/api/v1.5/tr.json/detect'
     >>> translate.url("translate")
-    "https://translate.yandex.net/api/v1.5/tr.json/translate"
+    'https://translate.yandex.net/api/v1.5/tr.json/translate'
     """
     return self.api_url.format(version=self.api_version,
                                endpoint=self.api_endpoints[endpoint])
@@ -98,9 +96,6 @@ class YandexTranslate(object):
     >>> result = translate.detect(text="Hello world!")
     >>> result == "en"
     True
-    >>> translate.detect("なのです")
-    Traceback (most recent call last):
-    YandexTranslateException: ERR_LANG_NOT_SUPPORTED
     """
     data = {
       "text": text,
@@ -132,9 +127,6 @@ class YandexTranslate(object):
     True
     >>> result["lang"] == "en-ru"
     True
-    >>> result = translate.translate("なのです", "en")
-    Traceback (most recent call last):
-    YandexTranslateException: ERR_LANG_NOT_SUPPORTED
     """
     data = {
       "text": text,
