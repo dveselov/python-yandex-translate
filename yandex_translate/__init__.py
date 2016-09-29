@@ -34,6 +34,11 @@ class YandexTranslate(object):
     "translate": "translate",
   }
 
+  defaultProxy = {
+    "http" : "",
+    "https" : ""
+  }
+
   def __init__(self, key=None):
     """
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
@@ -59,7 +64,7 @@ class YandexTranslate(object):
                                endpoint=self.api_endpoints[endpoint])
 
   @property
-  def directions(self):
+  def directions(self, proxy_dict=defaultProxy):
     """
     Returns list with translate directions
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
@@ -68,7 +73,7 @@ class YandexTranslate(object):
     True
     """
     try:
-      response = requests.get(self.url("langs"), params={"key": self.api_key})
+      response = requests.get(self.url("langs"), params={"key": self.api_key}, proxies=proxy_dict)
     except requests.exceptions.ConnectionError:
       raise YandexTranslateException(self.error_codes[503])
     else:
@@ -89,7 +94,7 @@ class YandexTranslate(object):
     """
     return set(x.split("-")[0] for x in self.directions)
 
-  def detect(self, text, format="plain"):
+  def detect(self, text, proxy_dict=defaultProxy, format="plain"):
     """
     Specifies language of text
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
@@ -103,7 +108,7 @@ class YandexTranslate(object):
       "key": self.api_key,
     }
     try:
-      response = requests.post(self.url("detect"), data=data)
+      response = requests.post(self.url("detect"), data=data, proxies=proxy_dict)
     except ConnectionError:
       raise YandexTranslateException(self.error_codes[503])
     except ValueError:
@@ -118,7 +123,7 @@ class YandexTranslate(object):
       raise YandexTranslateException(501)
     return language
 
-  def translate(self, text, lang, format="plain"):
+  def translate(self, text, lang, proxy_dict=defaultProxy, format="plain"):
     """
     Translates text to passed language
     >>> translate = YandexTranslate("trnsl.1.1.20130421T140201Z.323e508a33e9d84b.f1e0d9ca9bcd0a00b0ef71d82e6cf4158183d09e")
@@ -135,7 +140,7 @@ class YandexTranslate(object):
       "key": self.api_key
     }
     try:
-      response = requests.post(self.url("translate"), data=data)
+      response = requests.post(self.url("translate"), data=data, proxies=proxy_dict)
     except ConnectionError:
       raise YandexTranslateException(503)
     else:
