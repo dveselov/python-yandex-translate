@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 
 setup(name='yandex.translate',
-      version='0.3.5',
+      version='0.4.0',
       author="yandex.translate contributors",
       author_email="me@require.pm",
       description='Python library for Yandex.Translate API.',
