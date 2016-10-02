@@ -35,6 +35,7 @@ Translate directions: ['az-ru', 'be-bg', 'be-cs', ..]
 Detect language: 'ru'
 Translate: {'text': ['Hello, world!'], 'code': 200, 'lang': 'ru-en'}
 ```
+Also, it's possible to use proxies when doing requests to Yandex.Translate API - just pass `proxies` dictionary [with data in same format](http://docs.python-requests.org/en/master/user/advanced/#proxies) that `requests` use.
 
 License
 =======================
