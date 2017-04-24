@@ -42,7 +42,7 @@ class YandexTranslateTest(unittest.TestCase):
 
   def test_translate(self):
     result = self.translate.translate(u"Hello!", "ru")
-    self.assertEqual(result["text"][0], u"Здравствуйте!")
+    self.assertEqual(result["text"][0], u"Привет!")
     self.assertEqual(result["code"], 200)
 
   def test_translate_in_another_direction(self):
